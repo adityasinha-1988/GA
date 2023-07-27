@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Genetic Algorithm Optimization</title>
+</head>
+<body>
+    <h1>Genetic Algorithm Optimization</h1>
+    <form id="ga-form" method="POST" action="/run_genetic_algorithm">
+        <!-- Add input fields for all the parameters here -->
+        Population Size: <input type="number" name="population_size" value="100"><br>
+        Number of Generations: <input type="number" name="num_generations" value="100"><br>
+        Mutation Rate: <input type="number" name="mutation_rate" value="0.1"><br>
+        Crossover Rate: <input type="number" name="crossover_rate" value="0.8"><br>
+        Selection Method: <input type="text" name="selection_method" value="tournament"><br>
+        Elitism: <input type="checkbox" name="elitism"><br>
+
+        <button type="submit">Run Genetic Algorithm</button>
+    </form>
+
+    <!-- Div to display the graph -->
+    <div id="graph-container"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#ga-form').submit(function(event) {
+            event.preventDefault(); // Prevent form submission
+            var formData = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '/run_genetic_algorithm',
+                data: formData,
+                success: function(response) {
+                    var plotData = 'data:image/png;base64,' + response.plot_data;
+                    $('#graph-container').html('<img src="' + plotData + '">');
+                    // Add code here to display other results or update the GUI as needed
+                },
+                error: function(error) {
+                    console.log('Error:', error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
